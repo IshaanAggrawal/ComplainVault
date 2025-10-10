@@ -6,18 +6,43 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:ipfs": "node test-ipfs-integration.js",
+    "setup:ipfs": "node setup-ipfs.js",
+    "test:contract": "cd blockchain && npx hardhat test test/ipfs-integration.js"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.31.9",
+    "@reduxjs/toolkit": "^2.9.0",
+    "@splinetool/react-spline": "^1.0.0",
+    "ethers": "^6.15.0",
+    "framer-motion": "^12.23.22",
+    "ipfs-http-client": "^60.0.1",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.542.0",
+    "next": "15.5.2",
     "react": "19.1.0",
+    "react-countup": "^6.5.3",
     "react-dom": "19.1.0",
-    "next": "15.5.2"
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.5.0",
+    "react-intersection-observer": "^9.16.0",
+    "react-leaflet": "^5.0.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.9.4",
+    "react-visibility-sensor": "^5.1.1",
+    "reactflow": "^11.11.4",
+    "swiper": "^11.2.10",
+    "viem": "^2.37.2",
+    "wagmi": "^2.16.9"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
-    "@eslint/eslintrc": "^3"
+    "hardhat": "^3.0.4",
+    "tailwindcss": "^4"
   }
 }

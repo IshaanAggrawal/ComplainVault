@@ -15,7 +15,7 @@ export default function RoleSelector({ onRoleSelected }) {
       // Set role in localStorage
       setUserRole(selectedRole);
       
-      toast.success(`Role set to ${ROLE_LABELS[selectedRole]}`);
+      toast.success(Role set to ${ROLE_LABELS[selectedRole]});
       onRoleSelected(selectedRole);
     } catch (error) {
       console.error('Error setting role:', error);
@@ -95,7 +95,7 @@ export default function RoleSelector({ onRoleSelected }) {
 
           <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
             <div className="flex items-start space-x-3">
-              <div className="text-yellow-400 text-xl">⚠️</div>
+              <div className="text-yellow-400 text-xl">⚠</div>
               <div>
                 <h4 className="text-yellow-400 font-semibold mb-1">Important</h4>
                 <p className="text-yellow-200 text-sm">
@@ -115,6 +115,6 @@ export default function RoleSelector({ onRoleSelected }) {
           </button>
         </form>
       </div>
-    </div>
-  );
+    </div>
+  );
 }

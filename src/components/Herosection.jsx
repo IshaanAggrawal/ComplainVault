@@ -6,8 +6,8 @@ function Herosection() {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      <section className="relative z-10 flex flex-col items-center justify-center text-center px-4 py-32">
-        <video className="absolute background-video" style={{top:0, width:'100%', filter:'blur(5px) brightness(0.5)', zIndex:'-1',}} autoPlay loop muted playsInline>
+      <section className="relative z-10 flex flex-col items-center justify-center text-center px-4 py-22">
+        <video className="absolute background-video" style={{top:0, width:'100%', filter:'blur(4px) brightness(0.7)', zIndex:'-1',}} autoPlay loop muted playsInline>
           <source src="/videos/bg1.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
@@ -20,7 +20,7 @@ function Herosection() {
           </span>
         </h1>
 
-        <p className="mt-6 text-xl text-gray-400">
+        <p className="mt-6 text-xl text-grey-500">
           "A secure blockchain-powered system where your complaints are encrypted, verified, and resolved — with complete privacy guaranteed."
         </p>
 

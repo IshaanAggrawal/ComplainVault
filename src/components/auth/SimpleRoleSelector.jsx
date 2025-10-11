@@ -41,7 +41,7 @@ export default function SimpleRoleSelector() {
         }));
       }
       
-      toast.success(Welcome! Role set to ${ROLE_LABELS[selectedRole]});
+      toast.success(`Welcome! Role set to ${ROLE_LABELS[selectedRole]}`);
       
       // Redirect based on role
       if (selectedRole === ROLES.POLICE) {

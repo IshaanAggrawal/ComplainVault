@@ -41,7 +41,7 @@ export default function SimpleRoleSelector() {
         }));
       }
       
-      toast.success(`Welcome! Role set to ${ROLE_LABELS[selectedRole]}`);
+      toast.success(Welcome! Role set to ${ROLE_LABELS[selectedRole]});
       
       // Redirect based on role
       if (selectedRole === ROLES.POLICE) {
@@ -70,105 +70,135 @@ export default function SimpleRoleSelector() {
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 flex items-center justify-center">
+      <div className="min-h-screen cosmic-bg flex items-center justify-center">
         <div className="text-white text-xl">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 flex items-center justify-center p-4">
-      <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-2xl w-full border border-white/20">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-4">Choose Your Role</h1>
-          <p className="text-gray-300">
-            Select the role that best describes your position in the complaint system.
-          </p>
-        </div>
+    <div className="min-h-screen cosmic-bg flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* Cosmic Background Elements */}
+      <div className="absolute inset-0 cosmic-particles"></div>
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
+      
+      {/* Main Content */}
+      <div className="relative z-10 text-center mb-12">
+        <h1 className="text-5xl font-bold text-white mb-4 tracking-wide">Select Your Role</h1>
+        <p className="text-white/80 text-lg">
+          Your role determines the features and permissions you will access within the platform.
+        </p>
+      </div>
 
-        <form onSubmit={handleRoleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            <label className="block cursor-pointer p-6 rounded-xl border-2 border-white/20 bg-white/5 hover:bg-white/10 transition-all">
-              <input
-                type="radio"
-                name="role"
-                value={ROLES.CITIZEN}
-                checked={selectedRole === ROLES.CITIZEN}
-                onChange={(e) => setSelectedRole(e.target.value)}
-                className="sr-only"
-              />
-              <div className="flex items-center space-x-4">
-                <div className="text-4xl">👤</div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    {ROLE_LABELS[ROLES.CITIZEN]}
-                  </h3>
-                  <p className="text-gray-300">File complaints and track their status</p>
-                </div>
-                <div className={`w-6 h-6 rounded-full border-2 ${
-                  selectedRole === ROLES.CITIZEN
-                    ? 'border-white bg-white'
-                    : 'border-white/50'
-                }`}>
-                  {selectedRole === ROLES.CITIZEN && (
-                    <div className="w-full h-full rounded-full bg-purple-500 m-0.5"></div>
-                  )}
-                </div>
-              </div>
-            </label>
-
-            <label className="block cursor-pointer p-6 rounded-xl border-2 border-white/20 bg-white/5 hover:bg-white/10 transition-all">
-              <input
-                type="radio"
-                name="role"
-                value={ROLES.POLICE}
-                checked={selectedRole === ROLES.POLICE}
-                onChange={(e) => setSelectedRole(e.target.value)}
-                className="sr-only"
-              />
-              <div className="flex items-center space-x-4">
-                <div className="text-4xl">👮</div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    {ROLE_LABELS[ROLES.POLICE]}
-                  </h3>
-                  <p className="text-gray-300">Manage and resolve assigned complaints</p>
-                </div>
-                <div className={`w-6 h-6 rounded-full border-2 ${
-                  selectedRole === ROLES.POLICE
-                    ? 'border-white bg-white'
-                    : 'border-white/50'
-                }`}>
-                  {selectedRole === ROLES.POLICE && (
-                    <div className="w-full h-full rounded-full bg-purple-500 m-0.5"></div>
-                  )}
-                </div>
-              </div>
-            </label>
-          </div>
-
-          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
-            <div className="flex items-start space-x-3">
-              <div className="text-yellow-400 text-xl">⚠️</div>
-              <div>
-                <h4 className="text-yellow-400 font-semibold mb-1">Important</h4>
-                <p className="text-yellow-200 text-sm">
-                  You can change your role later in your profile settings.
-                  Police officer roles may require additional verification.
-                </p>
-              </div>
+      {/* Role Selection Cards */}
+      <div className="relative z-10 flex flex-col lg:flex-row gap-8 mb-12 max-w-6xl w-full">
+        {/* Citizen Card */}
+        <div 
+          className={`role-card cursor-pointer transition-all duration-300 ${
+            selectedRole === ROLES.CITIZEN ? 'selected' : ''
+          }`}
+          onClick={() => setSelectedRole(ROLES.CITIZEN)}
+        >
+          <div className="absolute top-4 right-4">
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+              selectedRole === ROLES.CITIZEN ? 'bg-purple-500' : 'bg-blue-400/50'
+            }`}>
+              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
             </div>
           </div>
+          
+          <div className="flex items-start space-x-4 mb-6">
+            <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-2">CITIZEN</h3>
+              <p className="text-white/80 text-sm leading-relaxed">
+                As a citizen, you can file new complaints, view your complaint history, and track status of your submissions in real-time.
+              </p>
+            </div>
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex items-center text-white/90">
+              <span className="text-purple-400 mr-3">{'>'}</span>
+              <span>File new complaints</span>
+            </div>
+            <div className="flex items-center text-white/90">
+              <span className="text-purple-400 mr-3">{'>'}</span>
+              <span>Track complaint status</span>
+            </div>
+            <div className="flex items-center text-white/90">
+              <span className="text-purple-400 mr-3">{'>'}</span>
+              <span>View your history</span>
+            </div>
+          </div>
+        </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white font-semibold py-3 px-6 rounded-lg transition duration-200"
-          >
-            {isSubmitting ? 'Setting Role...' : 'Continue'}
-          </button>
-        </form>
+        {/* Police Officer Card */}
+        <div 
+          className={`role-card cursor-pointer transition-all duration-300 ${
+            selectedRole === ROLES.POLICE ? 'selected' : ''
+          }`}
+          onClick={() => setSelectedRole(ROLES.POLICE)}
+        >
+          <div className="absolute top-4 right-4">
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+              selectedRole === ROLES.POLICE ? 'bg-purple-500' : 'bg-blue-400/50'
+            }`}>
+              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          
+          <div className="flex items-start space-x-4 mb-6">
+            <div className="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-2">POLICE OFFICER</h3>
+              <p className="text-white/80 text-sm leading-relaxed">
+                As a police officer, you can access your dashboard to view, manage, and resolve complaints assigned to you or your department.
+              </p>
+            </div>
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex items-center text-white/90">
+              <span className="text-purple-400 mr-3">{'>'}</span>
+              <span>View assigned complaints</span>
+            </div>
+            <div className="flex items-center text-white/90">
+              <span className="text-purple-400 mr-3">{'>'}</span>
+              <span>Update and resolve cases</span>
+              
+            </div>
+            <div className="flex items-center text-white/90">
+              <span className="text-purple-400 mr-3">{'>'}</span>
+              <span>Access department analytics</span>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Continue Button */}
+      <form onSubmit={handleRoleSubmit} className="relative z-10">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="continue-button px-12 py-4 text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? 'Setting Role...' : Continue as ${ROLE_LABELS[selectedRole]} >}
+        </button>
+      </form>
     </div>
   );
 }

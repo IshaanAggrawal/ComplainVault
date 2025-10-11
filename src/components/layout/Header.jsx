@@ -41,7 +41,7 @@ export default function Header() {
     ));
 
     // Add blockchain admin link if user is blockchain admin
-    if (blockchainAdmin) {
+    (blockchainAdmin && isAdmin || isPolice)? 
       baseRoutes.push(
         <Link 
           key="/complaint-admin" 
@@ -49,10 +49,9 @@ export default function Header() {
           onClick={closeMenu} 
           className="hover:text-purple-400 transition"
         >
-          Blockchain Admin
+          Assigned Complaints
         </Link>
-      );
-    }
+      ): null;
 
     return baseRoutes;
   };

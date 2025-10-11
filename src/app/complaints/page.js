@@ -139,7 +139,12 @@ export default function ComplaintsPage() {
                   
                   <div className="flex justify-between items-center text-sm text-gray-400">
                     <span>
-                      Filed: {new Date(complaint.timestamp).toLocaleDateString()}
+                  Filed: {new Date(
+                    isNaN(complaint.timestamp)
+                      ? complaint.timestamp
+                      : Number(complaint.timestamp) * 1000
+                  ).toLocaleString()}
+
                     </span>
                     <div className="flex space-x-4">
                       {complaint.txHash && (

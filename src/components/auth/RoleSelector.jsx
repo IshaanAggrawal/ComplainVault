@@ -15,7 +15,7 @@ export default function RoleSelector({ onRoleSelected }) {
       // Set role in localStorage
       setUserRole(selectedRole);
       
-      toast.success(Role set to ${ROLE_LABELS[selectedRole]});
+      toast.success(`Role set to ${ROLE_LABELS[selectedRole]}`);
       onRoleSelected(selectedRole);
     } catch (error) {
       console.error('Error setting role:', error);

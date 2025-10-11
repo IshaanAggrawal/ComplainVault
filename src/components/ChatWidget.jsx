@@ -132,7 +132,7 @@ function ChatWidget({ setIsOpen }) {
 			padding: '12px 20px',
 			borderRadius: 12,
 			border: 'none',
-			background: isSending ? '#93c5fd' : 'linear-gradient(90deg, #8b5cf6 0%, #3b82f6 100%)',
+			background: isSending ? '#93c5fd' : 'linear-gradient(90deg,rgb(6, 164, 25) 0%,rgb(84, 246, 59) 100%)',
 			color: '#fff',
 			fontWeight: 600,
 			cursor: isSending ? 'not-allowed' : 'pointer',

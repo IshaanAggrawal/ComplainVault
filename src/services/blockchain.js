@@ -102,8 +102,24 @@ const COMPLAINT_SYSTEM_ABI = [
             throw new Error('Failed to upload to IPFS: ' + ipfsResult.error);
         }
 
-        // File complaint with IPFS hash
-        const tx = await this.contract.fileComplaintWithIPFS(description, department, ipfsResult.hash);
+            let departmentId = department;
+
+            // If it's a string name (like "Water" or "Police"), map to number
+            if (typeof department === 'string' && isNaN(department)) {
+            const found = Object.entries(DEPARTMENT_NAMES).find(
+                ([, name]) => name.toLowerCase() === department.toLowerCase()
+            );
+            departmentId = found ? Number(found[0]) : 0; // Default to 0 (General)
+            }
+
+            // If it's a numeric string ("3"), convert to number
+            if (typeof department === 'string' && !isNaN(department)) {
+            departmentId = Number(department);
+            }
+
+
+        const tx = await this.contract.fileComplaintWithIPFS(description, departmentId, ipfsResult.hash);
+
         const receipt = await tx.wait();
         
         // Add individual file hashes to the complaint

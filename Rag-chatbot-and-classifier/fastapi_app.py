@@ -138,6 +138,7 @@ def classify(req: ComplaintRequest):
     2. Electricity Department
     3. Water Department
     4. Transport Department
+    else:
     5. General Department
 
     Complaint: "{description}"

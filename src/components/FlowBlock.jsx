@@ -36,11 +36,11 @@ const FlowBlock = (props) => {
                     d="M 8.4108601,44.923041 85.726555,148.17411 8.4000051,251.43912 H 130.91449 l 76.95499,-102.76944 h 0.7426 l -0.37156,-0.49609 0.36019,-0.48059 h -0.71986 L 130.92534,44.923041 Z" />
                 </g>
                 </svg>
-                <img src={props.icon} style={{width:'70px', height:'70px', position:'absolute',left:'135px', filter:'brightness(0) invert(1)'}}></img>
+                <img src={props.icon} style={{width:'70px', height:'70px', position:'absolute',left:'50%', filter:'brightness(0) invert(1)'}}></img>
             </div>
-            <div className='content' style={style.blockContent}>
+            <div className='content' style={{marginTop:'10%'}}>
                 <h1 style={{marginLeft:'5%', padding:'10px 30px', boxSizing:'border-box', borderRadius:'50px', backgroundColor:`${props.fill}`, width:'min-content'}}>{props.heading}</h1>
-                <p style={{padding:'10px 30px'}}>{props.text}</p>
+                <p style={{padding:'10px 30px', textAlign:'left'}}>{props.text}</p>
             </div>
         </div>
     )

@@ -86,28 +86,28 @@ const AdminPanel = () => {
         return `https://sepolia.etherscan.io/tx/${txHash}`;
     };
 
-    if (!isAdmin) {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 flex items-center justify-center">
-                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-md mx-4 text-center">
-                    <div className="text-red-400 text-6xl mb-4">🚫</div>
-                    <h2 className="text-2xl font-bold text-white mb-4">Access Denied</h2>
-                    <p className="text-gray-300 mb-4">
-                        You need administrator privileges to access this panel.
-                    </p>
-                    <div className="text-sm text-gray-400">
-                        <p>If you believe you should have admin access:</p>
-                        <ul className="mt-2 text-left">
-                            <li>• Check if your wallet is connected</li>
-                            <li>• Verify you're using the admin address</li>
-                            <li>• Ensure the contract is properly deployed</li>
-                            <li>• Check browser console for errors</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+    // if (!isAdmin) {
+    //     return (
+    //         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 flex items-center justify-center">
+    //             <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-md mx-4 text-center">
+    //                 <div className="text-red-400 text-6xl mb-4">🚫</div>
+    //                 <h2 className="text-2xl font-bold text-white mb-4">Access Denied</h2>
+    //                 <p className="text-gray-300 mb-4">
+    //                     You need administrator privileges to access this panel.
+    //                 </p>
+    //                 <div className="text-sm text-gray-400">
+    //                     <p>If you believe you should have admin access:</p>
+    //                     <ul className="mt-2 text-left">
+    //                         <li>• Check if your wallet is connected</li>
+    //                         <li>• Verify you're using the admin address</li>
+    //                         <li>• Ensure the contract is properly deployed</li>
+    //                         <li>• Check browser console for errors</li>
+    //                     </ul>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     );
+    // }
 
     return (
         <>

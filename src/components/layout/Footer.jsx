@@ -37,7 +37,7 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-white/20 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 ComplainVault. All rights reserved. Built with blockchain technology.</p>
+          <p>&copy; 2025 ComplainVault. All rights reserved. Built with blockchain technology.</p>
         </div>
       </div>
     </footer>

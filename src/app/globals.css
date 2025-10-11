@@ -25,3 +25,130 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Cosmic Background Styles */
+.cosmic-bg {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.cosmic-particles {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 200px 60px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 240px 20px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 280px 70px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 320px 40px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 360px 80px, rgba(255,255,255,0.5), transparent);
+  background-repeat: repeat;
+  background-size: 400px 100px;
+  animation: sparkle 20s linear infinite;
+}
+
+@keyframes sparkle {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-100px); }
+}
+
+/* Role Card Styles */
+.role-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 32px;
+  position: relative;
+  flex: 1;
+  min-height: 400px;
+  transition: all 0.3s ease;
+}
+
+.role-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.role-card.selected {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.role-card.selected::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 24px;
+  padding: 2px;
+  background: linear-gradient(135deg, #10b981, #8b5cf6, #3b82f6);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+}
+
+/* Citizen card specific gradient */
+.role-card:nth-child(1).selected::before {
+  background: linear-gradient(135deg, #10b981, #8b5cf6);
+}
+
+/* Police card specific gradient */
+.role-card:nth-child(2).selected::before {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+}
+
+/* Continue Button Styles */
+.continue-button {
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  border: none;
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.continue-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.continue-button:hover::before {
+  left: 100%;
+}
+
+.continue-button:hover {
+  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .role-card {
+    min-height: 350px;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .role-card {
+    min-height: 300px;
+    padding: 20px;
+  }
+  
+  .cosmic-particles {
+    background-size: 200px 50px;
+  }
+}

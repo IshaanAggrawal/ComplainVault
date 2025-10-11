@@ -114,7 +114,7 @@ function ChatWidget({ setIsOpen }) {
 		},
 		footer: {
 			padding: 12,
-			borderTop: '1px solid #e5e7eb',
+			borderTop: '1px solid rgba(229, 231, 235, 0.5)',
 			background: '#fff',
 			display: 'flex',
 			gap: 8

@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 export default function ComplaintsPage() {
   const [filter, setFilter] = useState('all');
   const dispatch = useDispatch();
-  const { list: complaints, loading, error } = useSelector((state) => state.complaints);
+  const { list: complaints, loading } = useSelector((state) => state.complaints);
 
   useEffect(() => {
     loadComplaints();
@@ -18,42 +18,35 @@ export default function ComplaintsPage() {
 
   const loadComplaints = async () => {
     try {
-      // Connect to wallet first
       const walletResult = await blockchainService.connectWallet();
       if (!walletResult.success) {
         toast.error('Failed to connect wallet: ' + walletResult.error);
         return;
       }
-
-      // Load complaints using Redux thunk
       await dispatch(loadComplaintsFromBlockchain()).unwrap();
     } catch (error) {
       console.error('Error loading complaints:', error);
-      toast.error('An error occurred while loading complaints: ' + error);
+      toast.error('An error occurred while loading complaints.');
     }
   };
 
-  const filteredComplaints = complaints.filter(complaint => {
-    if (filter === 'all') return true;
-    if (filter === 'pending') return !complaint.resolved;
-    if (filter === 'resolved') return complaint.resolved;
-    return true;
-  });
+  const filteredComplaints = complaints.filter((c) =>
+    filter === 'all' ? true : filter === 'pending' ? !c.resolved : c.resolved
+  );
 
-  const getStatusColor = (resolved) => {
-    return resolved ? 'text-green-400' : 'text-yellow-400';
-  };
+  const getStatusColor = (resolved) =>
+    resolved
+      ? 'bg-gradient-to-r from-green-400 to-emerald-600 text-white shadow-green-500/30'
+      : 'bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 shadow-orange-400/30';
 
-  const getStatusText = (resolved) => {
-    return resolved ? 'Resolved' : 'Pending';
-  };
+  const getStatusText = (resolved) => (resolved ? 'Resolved' : 'Pending');
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
         <Header />
         <div className="pt-20 flex items-center justify-center min-h-screen">
-          <div className="text-white text-xl">Loading complaints...</div>
+          <div className="text-white text-xl animate-pulse">Loading complaints...</div>
         </div>
         <Footer />
       </div>
@@ -63,52 +56,37 @@ export default function ComplaintsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
       <Header />
-      <div className="pt-20 pb-20">
+      <div className="pt-20 pb-24">
         <div className="max-w-7xl mx-auto px-6 py-8">
-          <h1 className="text-4xl font-bold text-white mb-8 text-center">My Complaints</h1>
-          
+          <h1 className="text-4xl font-extrabold text-white mb-10 text-center tracking-tight">
+            My Complaints
+          </h1>
+
           {/* Filter Buttons */}
-          <div className="flex justify-center mb-8 space-x-4">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-6 py-2 rounded-lg transition ${
-                filter === 'all' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'bg-white/20 text-gray-300 hover:bg-white/30'
-              }`}
-            >
-              All
-            </button>
-            <button
-              onClick={() => setFilter('pending')}
-              className={`px-6 py-2 rounded-lg transition ${
-                filter === 'pending' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'bg-white/20 text-gray-300 hover:bg-white/30'
-              }`}
-            >
-              Pending
-            </button>
-            <button
-              onClick={() => setFilter('resolved')}
-              className={`px-6 py-2 rounded-lg transition ${
-                filter === 'resolved' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'bg-white/20 text-gray-300 hover:bg-white/30'
-              }`}
-            >
-              Resolved
-            </button>
+          <div className="flex justify-center mb-10 space-x-4">
+            {['all', 'pending', 'resolved'].map((type) => (
+              <button
+                key={type}
+                onClick={() => setFilter(type)}
+                className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 
+                  ${filter === type
+                    ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/30 scale-105'
+                    : 'bg-white/10 text-gray-300 hover:bg-white/20 hover:scale-105'
+                  }`}
+              >
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </button>
+            ))}
           </div>
 
           {/* Complaints List */}
-          <div className="space-y-6">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredComplaints.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-gray-400 text-xl mb-4">No complaints found</div>
+              <div className="col-span-full text-center py-12">
+                <div className="text-gray-400 text-xl mb-6">No complaints found</div>
                 <a
                   href="/file-complaint"
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition"
+                  className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-purple-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg shadow-purple-500/30"
                 >
                   File a New Complaint
                 </a>
@@ -117,71 +95,81 @@ export default function ComplaintsPage() {
               filteredComplaints.map((complaint, index) => (
                 <div
                   key={complaint.id || index}
-                  className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20"
+                  className="group relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-400/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]"
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-xl font-semibold text-white mb-2">
-                        {complaint.title || `Complaint #${complaint.id}`}
-                      </h3>
-                      <p className="text-gray-300 text-sm">
-                        Department: {complaint.department}
-                      </p>
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(complaint.resolved)}`}>
-                      {getStatusText(complaint.resolved)}
-                    </span>
+                  {/* Status Chip */}
+                  <div
+                    className={`absolute top-5 right-5 px-4 py-1.5 text-sm font-semibold rounded-full shadow-md ${getStatusColor(
+                      complaint.resolved
+                    )}`}
+                  >
+                    {getStatusText(complaint.resolved)}
                   </div>
-                  
-                  <p className="text-gray-300 mb-4">
+
+                  {/* Complaint Title */}
+                  <h3 className="text-2xl font-semibold text-white mb-3 pr-28">
+                    {complaint.title || `Complaint #${complaint.id}`}
+                  </h3>
+
+                  {/* Department */}
+                  <p className="text-gray-400 text-sm mb-4">
+                    🏢 Department: <span className="text-gray-200">{complaint.department}</span>
+                  </p>
+
+                  {/* Description */}
+                  <p className="text-gray-200 text-sm leading-relaxed mb-6 line-clamp-3">
                     {complaint.description}
                   </p>
-                  
-                  <div className="flex justify-between items-center text-sm text-gray-400">
-                    <span>
-                  Filed: {new Date(
-                    isNaN(complaint.timestamp)
-                      ? complaint.timestamp
-                      : Number(complaint.timestamp) * 1000
-                  ).toLocaleString()}
 
-                    </span>
-                    <div className="flex space-x-4">
-                      {complaint.txHash && (
-                        <a
-                          href={`https://etherscan.io/tx/${complaint.txHash}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-purple-400 hover:text-purple-300 transition"
-                        >
-                          View on Blockchain
-                        </a>
-                      )}
-                      {complaint.ipfsHash && (
-                        <a
-                          href={`https://ipfs.io/ipfs/${complaint.ipfsHash}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-400 hover:text-blue-300 transition"
-                        >
-                          View Files
-                        </a>
-                      )}
-                    </div>
+                  {/* Timestamp */}
+                  <div className="text-xs text-gray-400 mb-4">
+                    📅 Filed:{' '}
+                    {new Date(
+                      isNaN(complaint.timestamp)
+                        ? complaint.timestamp
+                        : Number(complaint.timestamp) * 1000
+                    ).toLocaleString()}
                   </div>
-                  
-                  {/* Display attached files */}
+
+                  {/* Links */}
+                  <div className="flex flex-wrap gap-3 mt-3 text-sm">
+                    {complaint.txHash && (
+                      <a
+                        href={`https://etherscan.io/tx/${complaint.txHash}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 rounded-full bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 hover:text-white transition"
+                      >
+                        🔗 View on Blockchain
+                      </a>
+                    )}
+                    {complaint.ipfsHash && (
+                      <a
+                        href={`https://ipfs.io/ipfs/${complaint.ipfsHash}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 hover:text-white transition"
+                      >
+                        🧩 View Files
+                      </a>
+                    )}
+                  </div>
+
+                  {/* Attached Files */}
                   {complaint.files && complaint.files.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-white/20">
-                      <h4 className="text-white font-medium mb-2">Attached Files:</h4>
-                      <div className="space-y-2">
+                    <div className="mt-6 pt-4 border-t border-white/10">
+                      <h4 className="text-white font-medium mb-3 text-sm uppercase tracking-wide">
+                        Attached Files
+                      </h4>
+                      <div className="space-y-3">
                         {complaint.files.map((file, fileIndex) => (
-                          <div key={fileIndex} className="flex items-center justify-between bg-white/5 rounded-lg p-3">
+                          <div
+                            key={fileIndex}
+                            className="flex items-center justify-between bg-white/5 rounded-xl p-3 hover:bg-white/10 transition"
+                          >
                             <div className="flex items-center space-x-3">
-                              <div className="w-8 h-8 bg-purple-600 rounded flex items-center justify-center">
-                                <span className="text-white text-xs">
-                                  {file.type?.startsWith('image/') ? '🖼️' : '📄'}
-                                </span>
+                              <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white">
+                                {file.type?.startsWith('image/') ? '🖼️' : '📄'}
                               </div>
                               <div>
                                 <p className="text-white text-sm font-medium">{file.name}</p>
@@ -190,7 +178,7 @@ export default function ComplaintsPage() {
                                 </p>
                               </div>
                             </div>
-                            <div className="flex space-x-2">
+                            <div className="flex space-x-3">
                               {file.url && (
                                 <a
                                   href={file.url}

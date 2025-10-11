@@ -9,7 +9,7 @@ const COMPLAINT_SYSTEM_ABI = [
 ];
 
 const CONTRACT_ADDRESS = "0x98786De8245380dd40AA16c1c1C102CBeD84CDC2";
-const RPC_URL = "https://sepolia.infura.io/v3/YOUR_INFURA_KEY"; // Replace with your RPC URL
+const RPC_URL = "https://sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"; // Public Sepolia RPC
 
 async function testContractConnection() {
     console.log('🧪 Testing Contract Connection...\n');

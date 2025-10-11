@@ -81,9 +81,8 @@ export const getRoleBasedRoutes = (role) => {
     ],
     [ROLES.POLICE]: [
       { path: '/dashboard', label: 'Dashboard' },
-      { path: '/assigned', label: 'Assigned Complaints' },
+      // { path: '/assigned', label: 'Assigned Complaints' },
       { path: '/analytics', label: 'Analytics' },
-      { path: '/file-complaint', label: 'File Complaint' }
     ],
     [ROLES.ADMIN]: [
       { path: '/admin', label: 'Admin Panel' },

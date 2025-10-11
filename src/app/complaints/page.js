@@ -141,17 +141,77 @@ export default function ComplaintsPage() {
                     <span>
                       Filed: {new Date(complaint.timestamp).toLocaleDateString()}
                     </span>
-                    {complaint.txHash && (
-                      <a
-                        href={`https://etherscan.io/tx/${complaint.txHash}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-purple-400 hover:text-purple-300 transition"
-                      >
-                        View on Blockchain
-                      </a>
-                    )}
+                    <div className="flex space-x-4">
+                      {complaint.txHash && (
+                        <a
+                          href={`https://etherscan.io/tx/${complaint.txHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-purple-400 hover:text-purple-300 transition"
+                        >
+                          View on Blockchain
+                        </a>
+                      )}
+                      {complaint.ipfsHash && (
+                        <a
+                          href={`https://ipfs.io/ipfs/${complaint.ipfsHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:text-blue-300 transition"
+                        >
+                          View Files
+                        </a>
+                      )}
+                    </div>
                   </div>
+                  
+                  {/* Display attached files */}
+                  {complaint.files && complaint.files.length > 0 && (
+                    <div className="mt-4 pt-4 border-t border-white/20">
+                      <h4 className="text-white font-medium mb-2">Attached Files:</h4>
+                      <div className="space-y-2">
+                        {complaint.files.map((file, fileIndex) => (
+                          <div key={fileIndex} className="flex items-center justify-between bg-white/5 rounded-lg p-3">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-8 h-8 bg-purple-600 rounded flex items-center justify-center">
+                                <span className="text-white text-xs">
+                                  {file.type?.startsWith('image/') ? '🖼️' : '📄'}
+                                </span>
+                              </div>
+                              <div>
+                                <p className="text-white text-sm font-medium">{file.name}</p>
+                                <p className="text-gray-400 text-xs">
+                                  {(file.size / 1024 / 1024).toFixed(2)} MB • {file.type}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex space-x-2">
+                              {file.url && (
+                                <a
+                                  href={file.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-400 hover:text-blue-300 text-sm transition"
+                                >
+                                  View
+                                </a>
+                              )}
+                              {file.ipfsHash && (
+                                <a
+                                  href={`https://ipfs.io/ipfs/${file.ipfsHash}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-purple-400 hover:text-purple-300 text-sm transition"
+                                >
+                                  IPFS
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))
             )}

@@ -143,11 +143,7 @@ const WalletConnection = ({ onConnect, onDisconnect }) => {
 
     return (
         <div className="flex items-center space-x-4">
-            {/* Connection Status */}
-            <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-gray-300">Connected</span>
-            </div>
+    
 
             {/* Wallet Address */}
             <div className="flex items-center space-x-2">
@@ -165,13 +161,6 @@ const WalletConnection = ({ onConnect, onDisconnect }) => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
-
-                {/* Admin Badge */}
-                {isAdmin && (
-                    <span className="bg-yellow-500 text-yellow-900 px-2 py-1 rounded-full text-xs font-semibold">
-                        Admin
-                    </span>
-                )}
             </div>
 
             {/* Disconnect Button */}

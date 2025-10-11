@@ -35,7 +35,7 @@
     ];
 
     return (
-        <section className="py-16 text-center relative">
+        <section className="py-16 text-center relative my-15">
         <h2 className="text-5xl font-bold bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">
             Features
         </h2>

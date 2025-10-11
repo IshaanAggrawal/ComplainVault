@@ -76,12 +76,12 @@ function FileComplaint() {
 
             let ipfsHash = '';
             let fileHashes = [];
+            let filesToUpload = [];
 
             // Upload files to IPFS if any
             if (files.length > 0 || image) {
                 toast.loading('Uploading files to IPFS...', { id: 'ipfs-upload' });
                 
-                const filesToUpload = [];
                 if (image) filesToUpload.push(image);
                 filesToUpload.push(...files);
 
@@ -98,17 +98,18 @@ function FileComplaint() {
                 }
             }
 
-            // File complaint using Redux thunk
-            const result = await dispatch(fileComplaintToBlockchain({
-                description: formData.description,
-                department: formData.department,
-                ipfsHash: ipfsHash,
-                files: filesToUpload || []
-            })).unwrap();
+            // File complaint using the improved blockchain service
+            const result = await blockchainService.fileComplaint(
+                formData.description,
+                formData.department,
+                filesToUpload
+            );
 
-            if (result) {
+            if (result.success) {
                 toast.success('Complaint filed successfully with IPFS storage!');
                 setSubmitted(true);
+            } else {
+                toast.error('Failed to file complaint: ' + result.error);
             }
         } catch (error) {
             console.error('Error filing complaint:', error);

@@ -1,5 +1,6 @@
-    import { ethers } from 'ethers';
-    import { ipfsService } from './ipfs';
+import { ethers } from 'ethers';
+import { ipfsService } from './ipfs';
+import contractConfig from '../config/contract-address.json';
 
 // Contract ABI - This should match your deployed contract
 const COMPLAINT_SYSTEM_ABI = [
@@ -38,7 +39,7 @@ const COMPLAINT_SYSTEM_ABI = [
         this.provider = null;
         this.signer = null;
         this.contract = null;
-        this.contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+        this.contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || contractConfig.address;
     }
 
     async connectWallet() {
@@ -89,7 +90,8 @@ const COMPLAINT_SYSTEM_ABI = [
                     name: file.name,
                     size: file.size,
                     type: file.type,
-                    ipfsHash: uploadResult.hash
+                    ipfsHash: uploadResult.hash,
+                    url: ipfsService.getIPFSUrl(uploadResult.hash)
                 });
             }
         }
@@ -104,11 +106,21 @@ const COMPLAINT_SYSTEM_ABI = [
         const tx = await this.contract.fileComplaintWithIPFS(description, department, ipfsResult.hash);
         const receipt = await tx.wait();
         
+        // Add individual file hashes to the complaint
+        for (const fileHash of fileHashes) {
+            try {
+                await this.contract.addFileToComplaint(Number(receipt.logs[0].topics[1]), fileHash);
+            } catch (error) {
+                console.warn('Failed to add file hash to complaint:', error.message);
+            }
+        }
+        
         return { 
             success: true, 
             txHash: receipt.hash, 
             ipfsHash: ipfsResult.hash,
-            fileHashes 
+            fileHashes,
+            complaintData
         };
         } catch (error) {
         console.error('Failed to file complaint:', error);
@@ -171,6 +183,20 @@ const COMPLAINT_SYSTEM_ABI = [
         }
 
         const complaint = await this.contract.getComplaint(complaintId);
+        
+        // Try to retrieve additional data from IPFS
+        let ipfsData = null;
+        if (complaint.ipfsHash) {
+            try {
+                const ipfsResult = await ipfsService.retrieveComplaintData(complaint.ipfsHash);
+                if (ipfsResult.success) {
+                    ipfsData = ipfsResult.data;
+                }
+            } catch (error) {
+                console.warn('Failed to retrieve IPFS data:', error.message);
+            }
+        }
+
         return {
             success: true,
             complaint: {
@@ -182,7 +208,9 @@ const COMPLAINT_SYSTEM_ABI = [
             resolved: complaint.resolved,
             resolver: complaint.resolver,
             ipfsHash: complaint.ipfsHash,
-            fileHashes: complaint.fileHashes
+            fileHashes: complaint.fileHashes,
+            ipfsData: ipfsData, // Additional data from IPFS including file metadata
+            files: ipfsData?.files || [] // File metadata with names, sizes, types, URLs
             }
         };
         } catch (error) {
@@ -204,16 +232,35 @@ const COMPLAINT_SYSTEM_ABI = [
         }
 
         const complaints = await this.contract.getAllComplaints();
-        const formattedComplaints = complaints.map(complaint => ({
-            id: complaint.id.toString(),
-            user: complaint.user,
-            description: complaint.description,
-            department: DEPARTMENT_NAMES[complaint.department],
-            timestamp: new Date(Number(complaint.timestamp) * 1000),
-            resolved: complaint.resolved,
-            resolver: complaint.resolver,
-            ipfsHash: complaint.ipfsHash,
-            fileHashes: complaint.fileHashes
+        
+        // Process complaints and retrieve IPFS data
+        const formattedComplaints = await Promise.all(complaints.map(async (complaint) => {
+            // Try to retrieve additional data from IPFS
+            let ipfsData = null;
+            if (complaint.ipfsHash) {
+                try {
+                    const ipfsResult = await ipfsService.retrieveComplaintData(complaint.ipfsHash);
+                    if (ipfsResult.success) {
+                        ipfsData = ipfsResult.data;
+                    }
+                } catch (error) {
+                    console.warn(`Failed to retrieve IPFS data for complaint ${complaint.id}:`, error.message);
+                }
+            }
+
+            return {
+                id: complaint.id.toString(),
+                user: complaint.user,
+                description: complaint.description,
+                department: DEPARTMENT_NAMES[complaint.department],
+                timestamp: new Date(Number(complaint.timestamp) * 1000),
+                resolved: complaint.resolved,
+                resolver: complaint.resolver,
+                ipfsHash: complaint.ipfsHash,
+                fileHashes: complaint.fileHashes,
+                ipfsData: ipfsData, // Additional data from IPFS including file metadata
+                files: ipfsData?.files || [] // File metadata with names, sizes, types, URLs
+            };
         }));
 
         return { success: true, complaints: formattedComplaints };

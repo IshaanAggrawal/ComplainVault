@@ -1,6 +1,31 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { blockchainService } from "@/services/blockchain";
 
+// Helper function to convert BigInt values to strings recursively
+const serializeBigInt = (obj) => {
+    if (obj === null || obj === undefined) return obj;
+    
+    if (typeof obj === 'bigint') {
+        return obj.toString();
+    }
+    
+    if (Array.isArray(obj)) {
+        return obj.map(serializeBigInt);
+    }
+    
+    if (typeof obj === 'object') {
+        const serialized = {};
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                serialized[key] = serializeBigInt(obj[key]);
+            }
+        }
+        return serialized;
+    }
+    
+    return obj;
+};
+
 // Async thunks for blockchain operations
 export const loadComplaintsFromBlockchain = createAsyncThunk(
     'complaints/loadFromBlockchain',
@@ -8,7 +33,8 @@ export const loadComplaintsFromBlockchain = createAsyncThunk(
         try {
             const result = await blockchainService.getAllComplaints();
             if (result.success) {
-                return result.complaints;
+                // Serialize BigInt values before storing in Redux
+                return serializeBigInt(result.complaints);
             } else {
                 return rejectWithValue(result.error);
             }
@@ -24,13 +50,14 @@ export const fileComplaintToBlockchain = createAsyncThunk(
         try {
             const result = await blockchainService.fileComplaintWithIPFS(description, department, ipfsHash);
             if (result.success) {
-                return {
+                // Serialize BigInt values
+                return serializeBigInt({
                     ...result,
                     description,
                     department,
                     ipfsHash,
                     files
-                };
+                });
             } else {
                 return rejectWithValue(result.error);
             }
@@ -46,7 +73,8 @@ export const resolveComplaintOnBlockchain = createAsyncThunk(
         try {
             const result = await blockchainService.resolveComplaint(complaintId);
             if (result.success) {
-                return { complaintId, txHash: result.txHash };
+                // Serialize BigInt values
+                return serializeBigInt({ complaintId, txHash: result.txHash });
             } else {
                 return rejectWithValue(result.error);
             }
@@ -71,16 +99,20 @@ const complaintSlice = createSlice({
     reducers: {
         addComplaint: (state, action) => {
             const existingIndex = state.list.findIndex(c => c.id === action.payload.id);
+            // Serialize incoming complaint data
+            const serializedComplaint = serializeBigInt(action.payload);
             if (existingIndex === -1) {
-                state.list.push(action.payload);
+                state.list.push(serializedComplaint);
             } else {
-                state.list[existingIndex] = action.payload;
+                state.list[existingIndex] = serializedComplaint;
             }
         },
         updateComplaint: (state, action) => {
             const index = state.list.findIndex(c => c.id === action.payload.id);
             if (index !== -1) {
-                state.list[index] = { ...state.list[index], ...action.payload };
+                // Serialize incoming update data
+                const serializedUpdate = serializeBigInt(action.payload);
+                state.list[index] = { ...state.list[index], ...serializedUpdate };
             }
         },
         resolveComplaint: (state, action) => {
@@ -116,6 +148,7 @@ const complaintSlice = createSlice({
             })
             .addCase(loadComplaintsFromBlockchain.fulfilled, (state, action) => {
                 state.loading = false;
+                // Data is already serialized in the thunk
                 state.list = action.payload;
                 state.lastUpdated = new Date().toISOString();
             })

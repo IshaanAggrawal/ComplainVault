@@ -82,7 +82,7 @@
         </p>
 
         
-        <div className={`workflow-container ${isInView ? 'is-visible' : ''}`} 
+        <div className={`workflow-container ${isInView ? 'is-visible' : ''} my-30`} 
         ref={containerRef}
         style={{display:'flex',
         justifyContent:'center',

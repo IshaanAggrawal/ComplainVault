@@ -1,0 +1,18 @@
+# Core
+fastapi
+uvicorn
+python-dotenv
+
+# LangChain + Integrations
+langchain
+langchain-core
+langchain-community
+langchain-groq
+langchain-huggingface
+faiss-cpu
+
+# Utilities
+pydantic
+requests
+tqdm
+pymupdf

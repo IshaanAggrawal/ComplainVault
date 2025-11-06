@@ -1,19 +1,22 @@
-# --- Core LangChain ---
-langchain==0.3.4
-langchain-core==0.3.12
-langchain-community==0.3.2
-langchain-text-splitters==0.3.0
-
-# --- Integrations ---
-langchain-groq
-langchain-huggingface
-faiss-cpu
-
-# --- Web Framework ---
+# --- Core Web Framework ---
 fastapi
 uvicorn
 python-dotenv
 pydantic
+
+# --- LangChain & Integrations ---
+langchain==0.3.4
+langchain-core==0.3.12
+langchain-community==0.3.2
+langchain-text-splitters==0.3.0
+langchain-groq
+langchain-huggingface
+
+# --- Vector & PDF ---
+faiss-cpu
+pypdf                # <== Added
+pymupdf
+
+# --- Utilities ---
 requests
 tqdm
-pymupdf

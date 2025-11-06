@@ -1,17 +1,18 @@
-# Core
-fastapi
-uvicorn
-python-dotenv
+# --- Core LangChain ---
+langchain==0.3.4
+langchain-core==0.3.12
+langchain-community==0.3.2
+langchain-text-splitters==0.3.0
 
-# LangChain + Integrations
-langchain
-langchain-core
-langchain-community
+# --- Integrations ---
 langchain-groq
 langchain-huggingface
 faiss-cpu
 
-# Utilities
+# --- Web Framework ---
+fastapi
+uvicorn
+python-dotenv
 pydantic
 requests
 tqdm

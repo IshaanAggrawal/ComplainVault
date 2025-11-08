@@ -17,6 +17,7 @@
     "@google/generative-ai": "^0.24.1",
     "@reduxjs/toolkit": "^2.9.0",
     "@splinetool/react-spline": "^1.0.0",
+    "axios": "^1.7.7",
     "ethers": "^6.15.0",
     "framer-motion": "^12.23.22",
     "ipfs-http-client": "^60.0.1",
